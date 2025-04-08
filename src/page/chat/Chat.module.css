@@ -1,0 +1,121 @@
+.chatCol {
+  width: 100%;
+  height: 100%;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.chatCol1 {
+  width: 100%;
+  height: 100%;
+  font-family: "Times New Roman", Times, serif;
+  position: relative;
+  padding: 0 10px;
+  margin: 0 auto;
+  margin-top: 2rem;
+}
+
+.chatCol2 {
+  width: 100%;
+}
+
+.title {
+  font-size: 1.3rem;
+}
+.chatCol3 {
+  width: 100%;
+  position: relative;
+}
+
+.chatCol4 {
+  position: absolute;
+  width: 500px;
+  left: 65%;
+  top: 50%;
+  height: 75vh;
+  background-color: #808080;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 1px 1px white;
+  border-radius: 10px;
+  border-color: white;
+}
+
+.chatCol5 {
+  /* width: 100%;
+  margin: 10px;
+  position: relative; */
+
+  display: flex;
+  flex-direction: column;
+  height: 700px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  /* background: white; */
+}
+
+.chatCol6 {
+  display: flex;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
+.chatTitle {
+  font-size: 1rem;
+}
+
+.messageContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  
+}
+
+.message{
+  display: flex;
+  gap: 2rem;
+  
+  align-items: center;
+}
+
+.textMessage {
+  width: 200px;
+  height: 100%;
+  background-color: #ccc;
+  border-radius: 10px;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 10px;
+
+}
+
+.closeButton {
+  margin-right: 1rem;
+  width: 50px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+.sendList {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: white;
+}
+.sendList input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.sendButton {
+  padding: 8px 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}

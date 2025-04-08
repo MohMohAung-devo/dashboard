@@ -1,0 +1,68 @@
+:root {
+  --card-bg: linear-gradient(145deg, #4e73df, #3751be);
+  --text-color: #ffffff;
+  --title-color: #222;
+  --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  --box-shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dashboardCol1 {
+  width: 100%;
+  height: 100%;
+  font-family: "Times New Roman", Times, serif;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.dashboardCol2 {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100vh;
+}
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+}
+
+.dashboardCol3 {
+  /* width: 100%; */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.dashboardCol4 {
+  flex: 1 1 calc(20% - 20px);
+  min-width: 180px;
+  height: 150px;
+  background: linear-gradient(145deg, #4e73df, #3751be);
+  gap: 10px;
+  padding: 10px;
+  background-color: #808080;
+  color: #ffffff;
+  border-radius: 10px;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  box-sizing: border-box;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboardCol4:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.titleCol1 {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
