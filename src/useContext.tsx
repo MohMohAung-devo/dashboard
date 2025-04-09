@@ -72,7 +72,9 @@ const defaultTheme: ThemeType = {
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: defaultTheme,
-  toggleTheme: () => {},
+  toggleTheme: () => {
+    console.log(defaultTheme);
+  },
 });
 
 interface ReactProps {

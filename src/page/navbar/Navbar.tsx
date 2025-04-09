@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import classes from "./Navbar.module.css";
 import { useTheme } from "../../useContext";
@@ -32,23 +31,23 @@ const Navbar = () => {
           >
             <div
               style={{
+                height: "100%",
                 display: "flex",
-                gap: "10px",
+                gap: "5px",
                 justifyContent: "center",
                 justifyItems: "center",
                 alignContent: "center",
                 alignItems: "center",
+                textAlign: "center",
               }}
             >
-              <div style={{ fontSize: "16px" }}>{item.icon}</div>
+              <div style={{ fontSize: "18px" }}>{item.icon}</div>
               <p className={classes.textColor}>{item.name}</p>
             </div>
 
-            <RiArrowRightWideFill />
+            <RiArrowRightWideFill size={16} />
           </Link>
         ))}
-
-        <button>Logout</button>
       </div>
     </div>
   );

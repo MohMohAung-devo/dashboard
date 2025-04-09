@@ -11,19 +11,13 @@ const Header = () => {
     <div className={classes.headerCol1}>
       <div className={classes.headerCol2}>
         <div className={classes.serachContainer}>
-          <IoIosSearch className={classes.icons} />
+          <IoIosSearch className={classes.icons} size={20} />
           <input placeholder="Search..." className={classes.headerInput} />
         </div>
 
         <div className={classes.headerCol3}>
           <CgProfile size={20} />
-          <p
-            className={classes.headerTitle}
-            // style={{ color: theme.textColor, cursor: "pointer" }}
-          >
-            Profile
-          </p>
-          {/* <CgProfile className={classes.headerTitle} /> */}
+          <p className={classes.headerTitle}>Profile</p>
 
           <MdOutlineDarkMode
             onClick={toggleTheme}
