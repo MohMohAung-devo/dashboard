@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import classes from "./Product.module.css";
+import { ProductTable } from "./ProductTable";
 import Photo from "../../assets/photo.jpg";
 import Photo1 from "../../assets/photo1.jpg";
-import { useTheme } from "../../useContext";
 
-export const Product = () => {
-  const { theme } = useTheme();
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [count, setCount] = useState("");
-  const [file, setFile] = useState("");
-  const [show, setShow] = useState(false);
-  const [editItem, setEditItem] = useState<productProps | null>(null);
-
+const Product = () => {
   interface productProps {
     id: number;
     name: string;
@@ -38,200 +29,98 @@ export const Product = () => {
       file: Photo1,
       createdAt: "2025-04-08T10:20:30.000Z",
     },
+    {
+      id: 3,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+    {
+      id: 4,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo1,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+
+    {
+      id: 5,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+    {
+      id: 6,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo1,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+
+    {
+      id: 7,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+    {
+      id: 8,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo1,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+
+    {
+      id: 9,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+    {
+      id: 10,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo1,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+
+    {
+      id: 11,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
+    {
+      id: 12,
+      name: "Women clothes",
+      price: "1000",
+      count: "5",
+      file: Photo1,
+      createdAt: "2025-04-08T10:20:30.000Z",
+    },
   ];
 
-  const [product, setProduct] = useState(productList);
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-
-    if (selectedFile) {
-      setFile(URL.createObjectURL(selectedFile));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (editItem) {
-      setProduct((prv) =>
-        prv.map((item) =>
-          item.id === editItem.id ? { ...item, name, price, count, file } : item
-        )
-      );
-
-      setName("");
-      setPrice("");
-      setCount("");
-      setFile("");
-      setEditItem(null);
-      setShow(false);
-    } else {
-      setProduct([
-        ...product,
-        {
-          id: product.length + 1,
-          name,
-          price,
-          count,
-          file,
-          createdAt: new Date().toISOString(),
-        },
-      ]);
-      setShow(false);
-
-      setName("");
-      setPrice("");
-      setCount("");
-      setFile("");
-    }
-  };
-
-  console.log(product);
-
-  const handelDelete = (id: number) => {
-    setProduct(product.filter((item) => item.id !== id));
-  };
-  const handleEdit = (item: productProps) => {
-    setName(item.name);
-    setCount(item.count);
-    setPrice(item.price);
-    setFile(item.file);
-    setShow(true);
-    setEditItem(item);
-  };
-
-  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (editItem) {
-      setName(editItem.name);
-      setPrice(editItem.price);
-      setCount(editItem.count);
-      setFile(editItem.file);
-      setEditItem(null);
-      setShow(false);
-    } else {
-      setName("");
-      setPrice("");
-      setCount("");
-      setFile("");
-      setShow(false);
-    }
-  };
-
-  const formatteDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString();
-  };
-
+  const [data, setData] = useState(productList);
   return (
-    <div className={classes.productCol1}>
-      <div className={classes.productCol2}>
-        <div className={classes.productCol3}>
-          <h1 className={classes.title}>Product</h1>
-          <button
-            className={classes.button}
-            onClick={() => {
-              setEditItem(null);
-              setShow(true);
-            }}
-          >
-            Add Product
-          </button>
-        </div>
-
-        <div className={classes.productCol4}>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Count</th>
-                <th>Photo</th>
-                <th>Date</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {product.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
-                  <td>{item.count}</td>
-                  <td>
-                    <img src={item.file} className={classes.img} />
-                  </td>
-                  <td>{formatteDate(item.createdAt)}</td>
-
-                  <td>
-                    <button onClick={() => handleEdit(item)}>Edit</button>
-                  </td>
-                  <td>
-                    <button onClick={() => handelDelete(item.id)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {show ? (
-          <div className={classes.addProductCol1}>
-            <div className={classes.productCol1}>
-              <h1 
-              // style={{ color: theme.textColor, fontSize: "1.2rem" }}
-              className={classes.boxTitle}
-              >
-                {editItem ? "Edit Product Form" : " Add Product Form"}
-              </h1>
-              <div className={classes.addProductCol2}>
-                <form
-                  className={classes.addProductCol3}
-                  onSubmit={handleSubmit}
-                >
-                  <input
-                    placeholder="Name....."
-                    value={name}
-                    className={classes.input}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                  <input
-                    placeholder="Price...."
-                    value={price}
-                    className={classes.input}
-                    onChange={(e) => setPrice(e.target.value)}
-                  />
-                  <input
-                    placeholder="Count...."
-                    value={count}
-                    className={classes.input}
-                    onChange={(e) => setCount(e.target.value)}
-                  />
-                  <input type="file" onChange={handleFile} />
-
-                  {file && <img src={file} className={classes.prvFile} />}
-                  <div className={classes.addProductButton}>
-                    <button
-                      className={classes.cancelButton}
-                      type="submit"
-                      onClick={handleCancel}
-                    >
-                      Cancel
-                    </button>
-                    <button className={classes.submitButton} type="submit">
-                      {editItem ? "Update" : "Submit"}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-      </div>
-    </div>
+    <>
+      <ProductTable data={data} itemsPerPage={5} />
+    </>
   );
 };
+
+export default Product;

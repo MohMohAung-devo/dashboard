@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import classes from "./User.module.css";
+import { TbArrowsDownUp } from "react-icons/tb";
+import Footer from "./Footer";
 
 interface userProps {
   id: number;
@@ -30,7 +32,16 @@ const User = () => {
     },
     {
       id: 3,
-      name: "MohMohAung",
+      name: "Aung",
+      email: "mohmohaung737@gmail.com",
+      phone: "09259575377",
+      location: "Yangon",
+      date: "2.4.2025",
+    },
+
+    {
+      id: 4,
+      name: "Htwe",
       email: "mohmohaung737@gmail.com",
       phone: "09259575377",
       location: "Yangon",
@@ -44,6 +55,7 @@ const User = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
+  const [active, setActive] = useState(false);
 
   const handleEdit = (item: userProps) => {
     setName(item.name);
@@ -64,6 +76,11 @@ const User = () => {
 
     setEditItem(null);
   };
+  const handleSort = () => {
+    setUsers((prevUsers) =>
+      [...prevUsers].sort((a, b) => a.name.localeCompare(b.name))
+    );
+  };
 
   const handleDelete = (id: number) =>
     setUsers(users.filter((item) => item.id !== id));
@@ -78,18 +95,21 @@ const User = () => {
           <table>
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Location</th>
-                <th>Date</th>
+                <th style={{ cursor: "pointer" }}>
+                  Name
+                  <TbArrowsDownUp onClick={handleSort} />
+                </th>
+                <th style={{ cursor: "pointer" }}>Email</th>
+                <th style={{ cursor: "pointer" }}>Phone</th>
+                <th style={{ cursor: "pointer" }}>Location</th>
+                <th style={{ cursor: "pointer" }}>Date</th>
                 <th></th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {users.map((item) => (
-                <tr>
+              {users.map((item, id) => (
+                <tr key={id}>
                   {editItem?.id === item.id ? (
                     <td>
                       <input
@@ -137,7 +157,7 @@ const User = () => {
 
                   <td>{item.date}</td>
                   <td>
-                    {editItem ? (
+                    {editItem?.id === item.id ? (
                       <button
                         style={{
                           marginRight: "1rem",
@@ -149,7 +169,7 @@ const User = () => {
                           borderColor: "white",
                           cursor: "pointer",
                         }}
-                        onClick={() => handleUpdate(item)}
+                        onClick={() => handleUpdate(item.id)}
                       >
                         Update
                       </button>
@@ -192,6 +212,10 @@ const User = () => {
               ))}
             </tbody>
           </table>
+        </div>
+
+        <div className={classes.footer}>
+          <Footer users={users} setUsers={setUsers} />
         </div>
       </div>
     </div>

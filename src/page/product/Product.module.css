@@ -28,7 +28,6 @@
 .title {
   font-size: 2rem;
   font-weight: 700;
-  /* margin-bottom: 2rem; */
   color: var(--text-color);
 }
 
@@ -36,12 +35,8 @@
   width: 100%;
   margin: 0 auto;
   display: flex;
-  /* flex-direction: row; */
   justify-content: space-between;
-  /* justify-items: center;
-  align-content: center; */
   align-items: center;
-  /* margin-top: 10px; */
   overflow-x: auto;
 }
 
@@ -90,7 +85,6 @@ th {
 }
 
 tr:nth-child(even) {
-  /* background-color: #fafafa; */
   color: var(--text-color);
 }
 
@@ -111,7 +105,6 @@ th {
   border-radius: 12px;
   padding: 2rem;
   z-index: 1000;
-  /* color: var(--text-color); */
 }
 
 .productCol1 {
@@ -130,7 +123,6 @@ th {
 
 .addProductCol2 {
   width: 100%;
-  /* margin-top: 1rem; */
 }
 
 .addProductCol3 {
@@ -183,4 +175,44 @@ th {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.pagination {
+  width: 100%;
+}
+
+.paginationWraper {
+  display: flex;
+  flex-wrap: 1;
+  flex-grow: 1;
+  justify-content: end;
+  gap: 1rem;
+
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
+
+.paginationList {
+  display: flex;
+  gap: 5px;
+}
+
+.link {
+  height: 30px;
+  width: 30px;
+  border-radius: 2px;
+  background-color: #4465d1;
+  color: black !important;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.paginationLink {
+  text-decoration: none;
+}
+
+.isCurrent {
+  color: white;
 }
