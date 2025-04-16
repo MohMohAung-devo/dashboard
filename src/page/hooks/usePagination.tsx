@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface productProps {
   id: number;
@@ -15,7 +15,7 @@ interface typeInitial {
 }
 
 const usePagination = (initialState: typeInitial) => {
-  const { itemsPerPage, data, startFrom } = initialState;
+  const { itemsPerPage, data, startFrom = 1 } = initialState;
 
   const perPage = itemsPerPage ? itemsPerPage : 5;
 
@@ -27,9 +27,17 @@ const usePagination = (initialState: typeInitial) => {
     startFrom <= pages ? startFrom : 1
   );
 
-  const [slicedData, setSlicedData] = useState(
-    [...data].slice((currentPage - 1) * perPage, currentPage * perPage)
-  );
+  // const [slicedData, setSlicedData] = useState(
+  //   [...data].slice((currentPage - 1) * perPage, currentPage * perPage)
+  // );
+
+  const [slicedData, setSlicedData] = useState<productProps[]>([]);
+
+  useEffect(() => {
+    setSlicedData(
+      [...data].slice((currentPage - 1) * perPage, currentPage * perPage)
+    );
+  }, [data, currentPage, itemsPerPage]);
 
   let ellipsisLeft = false;
   let ellipsisRight = false;

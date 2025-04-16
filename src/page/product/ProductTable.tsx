@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./Product.module.css";
 import usePagination from "../hooks/usePagination";
 import { RiArrowRightWideFill } from "react-icons/ri";
@@ -29,6 +29,8 @@ export const ProductTable: React.FC<ProductTableProps> = ({
       itemsPerPage,
       startFrom: 1,
     });
+
+  console.log(data, "data");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [count, setCount] = useState("");
@@ -82,6 +84,8 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const handelDelete = (id: number) => {
     setProduct(product.filter((item) => item.id !== id));
   };
+
+  console.log(product, "slidedDAta");
   const handleEdit = (item: productProps) => {
     setName(item.name);
     setCount(item.count);
@@ -112,6 +116,10 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     const date = new Date(isoString);
     return date.toLocaleDateString();
   };
+
+  useEffect(() => {
+    setProduct(product);
+  }, [product]);
   return (
     <div className={classes.productCol1}>
       <div className={classes.productCol2}>
