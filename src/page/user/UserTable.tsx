@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./User.module.css";
 import { TbArrowsDownUp } from "react-icons/tb";
 import usePagination from "../hooks/usePagination";
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from "react-icons/ri";
+import axios from "axios";
 
 interface userProps {
-  id: number;
+  id: string;
   name: string;
   email: string;
   phone: string;
@@ -18,7 +19,7 @@ interface UserTableProps {
   itemsPerPage: number;
 }
 export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
-  const [users, setUsers] = useState<userProps[]>(data);
+  const [users, setUsers] = useState<userProps[]>([]);
   const { slicedData, pagination, prvPage, nextPage, changePage } =
     usePagination<userProps>({
       data: users,
@@ -26,14 +27,44 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
       startFrom: 1,
     });
 
-  console.log(data);
   const [editItem, setEditItem] = useState<userProps | null>(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
-  const [confirmId, setConfirmId] = useState<number | null>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
   const [boxShow, setBoxShow] = useState(false);
+
+  useEffect(() => {
+    const userData = data.map((item) => ({
+      id: item._id,
+      name: item.name,
+      email: item.email,
+      phone: item.phone,
+      location: item.location,
+      date: item.date,
+    }));
+    setUsers(userData);
+  }, [data]);
+
+  const handleUpdate = async (id: string) => {
+    try {
+      const result = await axios.put(`http://localhost:3000/updateUser/${id}`, {
+        id: id,
+        name: name,
+        email: email,
+        phone: phone,
+        location: location,
+      });
+
+      setUsers((prv) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        prv.map((user) => (user.id === id ? result.data : user))
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleEdit = (item: userProps) => {
     setName(item.name);
@@ -43,25 +74,20 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
     setEditItem(item);
   };
 
-  const handleUpdate = () => {
-    setUsers((prv) =>
-      prv.map((item) =>
-        item.id === editItem?.id
-          ? { ...item, name, email, phone, location }
-          : item
-      )
-    );
-
-    setEditItem(null);
-  };
   const handleSort = () => {
     setUsers((prevUsers) =>
       [...prevUsers].sort((a, b) => a.name.localeCompare(b.name))
     );
   };
 
-  const handleDelete = (id: number) =>
-    setUsers(users.filter((item) => item.id !== id));
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:3000/user/${id}`);
+      setUsers((user) => user.filter((item) => item.id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const confirmHandle = (item: userProps) => {
     setConfirmId(item.id);
@@ -153,7 +179,11 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
                   <td>{item.date}</td>
                   <td>
                     {editItem?.id === item.id ? (
-                      <button onClick={() => handleUpdate(item.id)}>
+                      <button
+                        type="button"
+                        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                        onClick={() => handleUpdate(item.id)}
+                      >
                         Update
                       </button>
                     ) : (
@@ -170,7 +200,11 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
                         </p>
                         <div className={classes.confirmButton}>
                           <button onClick={handleConfirmCancel}>Cancel</button>
-                          <button onClick={() => handleDelete(item.id)}>
+                          <button
+                            type="button"
+                            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                            onClick={() => handleDelete(item.id)}
+                          >
                             Delete
                           </button>
                         </div>

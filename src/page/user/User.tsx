@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserTable from "./UserTable";
+import axios from "axios";
 
 interface userProps {
   id: number;
@@ -11,43 +12,20 @@ interface userProps {
 }
 
 const User = () => {
-  const userList: userProps[] = [
-    {
-      id: 1,
-      name: "MohMohAung",
-      email: "mohmohaung737@gmail.com",
-      phone: "09259575377",
-      location: "Yangon",
-      date: "2.4.2025",
-    },
+  const [data, setData] = useState<userProps[]>([]);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const result = await axios.get(`http://localhost:3000/allUsers`);
+        setData(result.data);
+        console.log(result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchUser();
+  }, []);
 
-    {
-      id: 2,
-      name: "MohMohAung",
-      email: "mohmohaung737@gmail.com",
-      phone: "09259575377",
-      location: "Yangon",
-      date: "2.4.2025",
-    },
-    {
-      id: 3,
-      name: "Aung",
-      email: "mohmohaung737@gmail.com",
-      phone: "09259575377",
-      location: "Yangon",
-      date: "2.4.2025",
-    },
-
-    {
-      id: 4,
-      name: "Htwe",
-      email: "mohmohaung737@gmail.com",
-      phone: "09259575377",
-      location: "Yangon",
-      date: "2.4.2025",
-    },
-  ];
-  const [data, setData] = useState(userList);
   useEffect(() => {
     setData(data);
   }, [data]);

@@ -1,6 +1,5 @@
 import Layout from "./layout";
 import { Home } from "./page/dashbaord/Home";
-
 import Product from "./page/product/Product";
 import User from "./page/user/User";
 import { Routes, BrowserRouter, Route } from "react-router-dom";

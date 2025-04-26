@@ -1,22 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-interface productProps {
-  id: number;
-  name: string;
-  price: string;
-  count: string;
-  file: string;
-  createdAt: string;
-}
-
-interface userProps {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  location: string;
-  date: string;
-}
 interface typeInitial<T> {
   itemsPerPage: number;
   data: T[];
