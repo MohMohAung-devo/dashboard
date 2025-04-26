@@ -68,6 +68,24 @@ th {
   color: var(--text-color);
 }
 
+.confirmBox {
+  position: absolute;
+  width: 250px;
+  height: 100px;
+  border: 1px solid gray;
+  left: 40%;
+  top: 30%;
+  background-color: #4465d1;
+  padding: 1.5rem;
+  border-radius: 5px;
+  color: white;
+}
+
+.confirmButton {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 .pagination {
   width: 100%;
 }

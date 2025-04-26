@@ -32,7 +32,8 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
-  const [active, setActive] = useState(false);
+  const [confirmId, setConfirmId] = useState<number | null>(null);
+  const [boxShow, setBoxShow] = useState(false);
 
   const handleEdit = (item: userProps) => {
     setName(item.name);
@@ -61,6 +62,23 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
 
   const handleDelete = (id: number) =>
     setUsers(users.filter((item) => item.id !== id));
+
+  const confirmHandle = (item: userProps) => {
+    setConfirmId(item.id);
+    setBoxShow(true);
+  };
+
+  const handleConfirmCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (confirmId) {
+      setConfirmId(null);
+      setBoxShow(false);
+    } else {
+      setConfirmId(null);
+      setBoxShow(false);
+    }
+  };
   return (
     <div className={classes.userCol1}>
       <div className={classes.userCol2}>
@@ -143,9 +161,21 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
                     )}
                   </td>
                   <td>
-                    <button onClick={() => handleDelete(item.id)}>
-                      Delete
-                    </button>
+                    <button onClick={() => confirmHandle(item)}>Delete</button>
+
+                    {boxShow && confirmId === item.id && (
+                      <div className={classes.confirmBox}>
+                        <p style={{ textAlign: "center", fontSize: "18px" }}>
+                          Are you sure delete this user?
+                        </p>
+                        <div className={classes.confirmButton}>
+                          <button onClick={handleConfirmCancel}>Cancel</button>
+                          <button onClick={() => handleDelete(item.id)}>
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

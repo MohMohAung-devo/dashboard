@@ -37,6 +37,9 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const [file, setFile] = useState("");
   const [show, setShow] = useState(false);
   const [editItem, setEditItem] = useState<productProps | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmId, setConfirmId] = useState<number | null>(null);
+  const [boxShow, setBoxShow] = useState(false);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -45,8 +48,12 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsLoading(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     if (editItem) {
       setProduct((prv) =>
@@ -54,7 +61,6 @@ export const ProductTable: React.FC<ProductTableProps> = ({
           item.id === editItem.id ? { ...item, name, price, count, file } : item
         )
       );
-
       setName("");
       setPrice("");
       setCount("");
@@ -62,6 +68,10 @@ export const ProductTable: React.FC<ProductTableProps> = ({
       setEditItem(null);
       setShow(false);
     } else {
+      if (!name || !price || !count || !file) {
+        alert("Please fill in all field");
+        return;
+      }
       setProduct([
         ...product,
         {
@@ -73,13 +83,19 @@ export const ProductTable: React.FC<ProductTableProps> = ({
           createdAt: new Date().toISOString(),
         },
       ]);
-      setShow(false);
 
       setName("");
       setPrice("");
       setCount("");
       setFile("");
     }
+
+    setName("");
+    setPrice("");
+    setCount("");
+    setFile("");
+    setShow(false);
+    setIsLoading(false);
   };
   const handelDelete = (id: number) => {
     setProduct(product.filter((item) => item.id !== id));
@@ -120,8 +136,30 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   useEffect(() => {
     setProduct(product);
   }, [product]);
+
+  const confirmHandle = (item: productProps) => {
+    setConfirmId(item.id);
+    setBoxShow(true);
+  };
+
+  const handleConfirmCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (confirmId) {
+      setConfirmId(null);
+      setBoxShow(false);
+      setShow(false);
+    } else {
+      setConfirmId(null);
+      setBoxShow(false);
+    }
+  };
   return (
-    <div className={classes.productCol1}>
+    <div
+      className={`${classes.productCol1} ${
+        boxShow ? classes.boxShowBackground : ""
+      }`}
+    >
       <div className={classes.productCol2}>
         <div className={classes.productCol3}>
           <h1 className={classes.title}>Product</h1>
@@ -164,9 +202,20 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     <button onClick={() => handleEdit(item)}>Edit</button>
                   </td>
                   <td>
-                    <button onClick={() => handelDelete(item.id)}>
-                      Delete
-                    </button>
+                    <button onClick={() => confirmHandle(item)}>Delete</button>
+                    {boxShow && confirmId === item.id && (
+                      <div className={classes.confirmBox}>
+                        <p style={{ textAlign: "center", fontSize: "18px" }}>
+                          Are you sure delete this product?
+                        </p>
+                        <div className={classes.confirmButton}>
+                          <button onClick={handleConfirmCancel}>Cancel</button>
+                          <button onClick={() => handelDelete(item.id)}>
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -190,6 +239,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     className={classes.input}
                     onChange={(e) => setName(e.target.value)}
                   />
+
                   <input
                     placeholder="Price...."
                     value={price}
@@ -213,8 +263,16 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     >
                       Cancel
                     </button>
-                    <button className={classes.submitButton} type="submit">
-                      {editItem ? "Update" : "Submit"}
+                    <button
+                      className={classes.submitButton}
+                      type="submit"
+                      disabled={isLoading}
+                    >
+                      {isLoading
+                        ? "Submitting...."
+                        : editItem
+                        ? "Update"
+                        : "Submit"}
                     </button>
                   </div>
                 </form>
