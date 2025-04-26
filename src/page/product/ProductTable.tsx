@@ -24,7 +24,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
 }) => {
   const [product, setProduct] = useState<productProps[]>(data);
   const { slicedData, pagination, prvPage, nextPage, changePage } =
-    usePagination({
+    usePagination<productProps>({
       data: product,
       itemsPerPage,
       startFrom: 1,

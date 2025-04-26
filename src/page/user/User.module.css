@@ -11,7 +11,7 @@
   height: 100vh;
   max-width: 1280px;
   margin: 0 auto;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .header {
@@ -40,8 +40,9 @@
 }
 
 .userCol3 {
-  overflow-x: auto;
   width: 100%;
+  overflow-x: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .userTitle {
@@ -50,13 +51,59 @@
 table {
   border-collapse: collapse;
   width: 100%;
+  min-width: 600px;
 }
 
 th,
 td {
   text-align: left;
   padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+  height: 40px;
 }
 
-.footer {
+th {
+  background-color: #4465d1 !important;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.pagination {
+  width: 100%;
+}
+
+.paginationWraper {
+  display: flex;
+  flex-wrap: 1;
+  flex-grow: 1;
+  justify-content: end;
+  gap: 1rem;
+
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+}
+
+.paginationList {
+  display: flex;
+  gap: 5px;
+}
+
+.link {
+  height: 30px;
+  width: 30px;
+  border-radius: 2px;
+  background-color: #4465d1;
+  color: black !important;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+}
+.paginationLink {
+  text-decoration: none;
+}
+
+.isCurrent {
+  color: white;
 }

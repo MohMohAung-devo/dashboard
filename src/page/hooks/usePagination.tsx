@@ -8,13 +8,22 @@ interface productProps {
   file: string;
   createdAt: string;
 }
-interface typeInitial {
+
+interface userProps {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  date: string;
+}
+interface typeInitial<T> {
   itemsPerPage: number;
-  data: productProps[];
+  data: T[];
   startFrom: number;
 }
 
-const usePagination = (initialState: typeInitial) => {
+const usePagination = <T,>(initialState: typeInitial<T>) => {
   const { itemsPerPage, data, startFrom = 1 } = initialState;
 
   const perPage = itemsPerPage ? itemsPerPage : 5;
@@ -26,12 +35,7 @@ const usePagination = (initialState: typeInitial) => {
   const [currentPage, setCurrentPage] = useState(
     startFrom <= pages ? startFrom : 1
   );
-
-  // const [slicedData, setSlicedData] = useState(
-  //   [...data].slice((currentPage - 1) * perPage, currentPage * perPage)
-  // );
-
-  const [slicedData, setSlicedData] = useState<productProps[]>([]);
+  const [slicedData, setSlicedData] = useState<T[]>([]);
 
   useEffect(() => {
     setSlicedData(
