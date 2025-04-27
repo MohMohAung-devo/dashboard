@@ -11,7 +11,7 @@ interface userProps {
   email: string;
   phone: string;
   location: string;
-  date: string;
+  createdAt: string;
 }
 
 interface UserTableProps {
@@ -28,38 +28,72 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
     });
 
   const [editItem, setEditItem] = useState<userProps | null>(null);
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [boxShow, setBoxShow] = useState(false);
-
+  const [show, setShow] = useState(false);
   useEffect(() => {
     const userData = data.map((item) => ({
-      id: item._id,
+      id: item._id ,
       name: item.name,
       email: item.email,
       phone: item.phone,
       location: item.location,
-      date: item.date,
+      createdAt: item.createdAt,
     }));
     setUsers(userData);
   }, [data]);
 
+  const handleUserAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const addUser = await axios.post<userProps>(
+        `http://localhost:3000/users`,
+        {
+          id: id,
+          name: name,
+          email: email,
+          phone: phone,
+          location: location,
+          date: new Date().toISOString(),
+        }
+      );
+
+      setUsers((prv) => [...prv, { id: addUser.data.id, ...addUser.data }]);
+      setShow(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleShow = () => {
+    setShow(!show);
+  };
+
   const handleUpdate = async (id: string) => {
     try {
-      const result = await axios.put(`http://localhost:3000/updateUser/${id}`, {
-        id: id,
-        name: name,
-        email: email,
-        phone: phone,
-        location: location,
-      });
+      const result = await axios.put<userProps>(
+        `http://localhost:3000/updateUser/${id}`,
+        {
+          id: id,
+          name: name,
+          email: email,
+          phone: phone,
+          location: location,
+          date: new Date().toISOString(),
+        }
+      );
 
       setUsers((prv) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        prv.map((user) => (user.id === id ? result.data : user))
+        prv.map((user) =>
+          user.id === id
+            ? { ...user, ...result.data, createdAt: user.createdAt }
+            : user
+        )
       );
     } catch (err) {
       console.log(err);
@@ -105,11 +139,16 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
       setBoxShow(false);
     }
   };
+
+  if (!data) return <h1>Loading....</h1>;
   return (
     <div className={classes.userCol1}>
       <div className={classes.userCol2}>
         <div className={classes.header}>
           <h1 className={classes.userTitle}>Users List</h1>
+          <button onClick={handleShow} className={classes.button}>
+            Add Users
+          </button>
         </div>
 
         <div className={classes.userCol3}>
@@ -176,7 +215,11 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
                     <td>{item.location}</td>
                   )}
 
-                  <td>{item.date}</td>
+                  <td>
+                    {item.createdAt
+                      ? new Date(item.createdAt).toLocaleDateString()
+                      : "No Date"}
+                  </td>
                   <td>
                     {editItem?.id === item.id ? (
                       <button
@@ -216,6 +259,52 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
             </tbody>
           </table>
         </div>
+        {show ? (
+          <div className={classes.addUser}>
+            <div className={classes.addUserContainer}>
+              <h1 className={classes.title}>Add Products</h1>
+              <div className={classes.userAddWrapper}>
+                <form className={classes.userWrap} onSubmit={handleUserAdd}>
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className={classes.input}
+                    placeholder="Name...."
+                  />
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={classes.input}
+                    placeholder="Email...."
+                  />
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className={classes.input}
+                    placeholder="Phone....."
+                  />
+                  <input
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className={classes.input}
+                    placeholder="Location...."
+                  />
+
+                  <div className={classes.userAddButton}>
+                    <button className={classes.cancelButton} type="submit">
+                      Cancel
+                    </button>
+                    <button className={classes.submitButton} type="submit">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
 
         <div className={classes.pagination}>
           <div className={classes.paginationWraper}>
