@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./Product.module.css";
 import usePagination from "../hooks/usePagination";
-import { RiArrowRightWideFill } from "react-icons/ri";
-import { RiArrowLeftWideFill } from "react-icons/ri";
+import { RiArrowRightWideFill, RiArrowLeftWideFill } from "react-icons/ri";
 
 interface productProps {
   id: number;
@@ -194,7 +193,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                   <td>{item.price}</td>
                   <td>{item.count}</td>
                   <td>
-                    <img src={item.file} className={classes.img} />
+                    <img src={item.file} className={classes.img} alt="img" />
                   </td>
                   <td>{formatteDate(item.createdAt)}</td>
 

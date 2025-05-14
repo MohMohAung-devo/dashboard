@@ -16,22 +16,8 @@
   padding: 20px;
 }
 
-/* .boxShowBackground {
-  position: fixed; 
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); 
-  z-index: 100; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
 .baxShowBackground {
   z-index: 100;
-
 }
 
 .productCol2 {
@@ -95,6 +81,9 @@ table {
 }
 thead {
   background-color: #4465d1 !important;
+}
+th {
+  color: white !important;
 }
 td,
 th {
@@ -183,7 +172,6 @@ th {
   border-color: #346770;
   box-shadow: 0 0 0 2px rgba(52, 103, 112, 0.2);
 }
-
 
 .addProductButton {
   display: flex;

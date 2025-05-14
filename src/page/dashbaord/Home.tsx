@@ -1,6 +1,5 @@
-import React from "react";
 import classes from "./Home.module.css";
-
+import Chart from "./Chart";
 
 export const Home = () => {
   const totalList = [
@@ -22,6 +21,7 @@ export const Home = () => {
             </div>
           ))}
         </div>
+        <Chart />
       </div>
     </div>
   );

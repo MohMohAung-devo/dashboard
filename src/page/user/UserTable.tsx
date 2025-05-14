@@ -36,9 +36,10 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [boxShow, setBoxShow] = useState(false);
   const [show, setShow] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const userData = data.map((item) => ({
-      id: item._id ,
+      id: item._id,
       name: item.name,
       email: item.email,
       phone: item.phone,
@@ -66,7 +67,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
       setUsers((prv) => [...prv, { id: addUser.data.id, ...addUser.data }]);
       setShow(false);
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
   };
 
@@ -96,7 +97,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
         )
       );
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
   };
 
@@ -119,7 +120,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
       await axios.delete(`http://localhost:3000/user/${id}`);
       setUsers((user) => user.filter((item) => item.id !== id));
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
   };
 

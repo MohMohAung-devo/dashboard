@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ProductTable } from "./ProductTable";
 import Photo from "../../assets/photo.jpg";
-import Photo1 from "../../assets/photo1.jpg";
 
 const Product = () => {
   interface productProps {
@@ -26,7 +25,7 @@ const Product = () => {
       name: "Women clothes",
       price: "1000",
       count: "5",
-      file: Photo1,
+      file: Photo,
       createdAt: "2025-04-08T10:20:30.000Z",
     },
     {
@@ -42,7 +41,7 @@ const Product = () => {
       name: "Women clothes",
       price: "1000",
       count: "5",
-      file: Photo1,
+      file: Photo,
       createdAt: "2025-04-08T10:20:30.000Z",
     },
   ];

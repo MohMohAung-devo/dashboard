@@ -1,45 +1,3 @@
-// import { useState, useContext, createContext, ReactNode } from "react";
-
-// const ThemeContext = createContext({
-//   theme: {
-//     primaryColor: "#f5f7fa",
-//     secondaryColor: "#ffffff",
-//     backgroundColor: "#ffffff",
-//     textColor: "#1e1e1e",
-//   },
-//   toggleTheme: () => {
-//     console.log("Theme toggled!");
-//   },
-// });
-
-// interface reactProps {
-//   children: ReactNode;
-// }
-// export const ThemeProvider = ({ children }: reactProps) => {
-//   const [theme, setTheme] = useState({
-//     primaryColor: "#f5f7fa",
-//     secondaryColor: "#ffffff",
-//     backgroundColor: "#ffffff",
-//     textColor: "#1e1e1e",
-//   });
-
-//   const toggleTheme = () => {
-//     setTheme((prv) => ({
-//       ...prv,
-//       primaryColor: prv.primaryColor === "#f5f7fa" ? "black" : "#f5f7fa",
-//       textColor: prv.textColor === "black" ? "#ccc" : "black",
-//     }));
-//     console.log("theme", theme.primaryColor);
-//   };
-
-//   return (
-//     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-//       {children}
-//     </ThemeContext.Provider>
-//   );
-// };
-
-// export const useTheme = () => useContext(ThemeContext);
 import {
   useState,
   useContext,
@@ -48,7 +6,6 @@ import {
   useEffect,
 } from "react";
 
-// Define the type for your theme
 interface ThemeType {
   mode: "light" | "dark";
   primaryColor: string;

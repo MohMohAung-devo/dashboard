@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import UserTable from "./UserTable";
 import axios from "axios";
 
@@ -18,24 +18,24 @@ const User = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      setIsLoading(true);
       try {
         const result = await axios.get<userProps[]>(
           `http://localhost:3000/allUsers`
         );
         setData(result.data);
-        console.log(result.data);
-        setIsLoading(false);
       } catch (err) {
-        console.log(err);
         setError(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     void fetchUser();
   }, []);
 
-  useEffect(() => {
-    setData(data);
-  }, [data]);
+  // useEffect(() => {
+  //   setData(data);
+  // }, [data]);
 
   if (isLoading) return <h1>Loading.....</h1>;
   if (!data || data.length === 0) return <h1>Not Data</h1>;

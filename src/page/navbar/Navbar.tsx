@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
 import classes from "./Navbar.module.css";
-import { useTheme } from "../../useContext";
 import { useLocation } from "react-router-dom";
 import { RxDashboard } from "react-icons/rx";
-import { CiUser } from "react-icons/ci";
+import { CiUser, CiChat1 } from "react-icons/ci";
 import { LiaProductHunt } from "react-icons/lia";
-import { CiChat1 } from "react-icons/ci";
 import { RiArrowRightWideFill } from "react-icons/ri";
 
 const Navbar = () => {
-  const { theme } = useTheme();
   const location = useLocation();
   const menu = [
     { name: "Dashbord", link: "/", icon: <RxDashboard /> },
