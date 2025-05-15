@@ -8,6 +8,7 @@ import { AuthProvider } from "./services/authContext";
 import Chat from "./page/chat/Chat";
 import ProtectRoutes from "./components/ProtectRoutes";
 import Login from "./components/login/Login";
+import Register from "./components/register/Register";
 function App() {
   return (
     <AuthProvider>
@@ -15,6 +16,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="" element={<ProtectRoutes />}>
               <Route path="" element={<Layout />}>
                 <Route path="/" element={<Home />} />

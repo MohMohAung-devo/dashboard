@@ -3,6 +3,16 @@ import axios, { AxiosError } from "axios";
 const API = axios.create({
   baseURL: "http://localhost:3000",
   withCredentials: true,
+
+  headers: {
+    "Content-Type": "application/json",
+  },
+  timeout: 5000,
+});
+
+API.interceptors.request.use((config) => {
+  config.headers["Content-Type"] = "application/json";
+  return config;
 });
 
 API.interceptors.response.use(
@@ -21,4 +31,5 @@ API.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 export default API;

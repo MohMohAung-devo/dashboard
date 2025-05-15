@@ -1,25 +1,31 @@
 import { Link } from "react-router-dom";
-import classes from "./Login.module.css";
+import classes from "./Register.module.css";
 import { useAuth } from "../../services/authContext";
 import { ReactElement, useState } from "react";
 
 interface LoginProps {
+  name: string;
+  phone: string;
+  location: string;
   email: string;
   password: string;
 }
-const Login = () => {
-  const { login } = useAuth();
+const Register = () => {
+  const { register } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [location, setLocation] = useState("");
+  const [name, setName] = useState("");
   const [data, setData] = useState<LoginProps[]>([]);
 
   const hanldeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setEmail(email);
     setPassword(password);
-    setData([...data, { email, password }]);
+    setData([...data, { email, password, phone, name, location }]);
 
-    const reslut = await login({ email, password });
+    const reslut = await register({ email, password, phone, name, location });
     return reslut;
   };
 
@@ -40,6 +46,23 @@ const Login = () => {
             className={classes.input}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          <input
+            placeholder="Name..."
+            className={classes.input}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <input
+            placeholder="Phone..."
+            className={classes.input}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <input
+            placeholder="Location..."
+            className={classes.input}
+            onChange={(e) => setLocation(e.target.value)}
+          />
           <button type="submit" className={classes.button}>
             Submit
           </button>
@@ -54,4 +77,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
