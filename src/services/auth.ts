@@ -36,7 +36,7 @@ interface AuthResponse {
 
 export const register = async (userData: userData): Promise<AuthResponse> => {
   try {
-    const response = await API.post<AuthResponse>("/users", userData);
+    const response = await API.post<AuthResponse>("/register", userData);
     return response.data;
   } catch (error: unknown) {
     const apiError = error as ApiError;
