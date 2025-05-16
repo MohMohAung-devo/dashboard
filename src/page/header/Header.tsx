@@ -4,8 +4,10 @@ import { useTheme } from "../../useContext";
 import { MdOutlineDarkMode } from "react-icons/md";
 import { IoIosSearch } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
+import { useAuth } from "../../services/authContext";
 
 const Header = () => {
+  const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
   return (
     <div className={classes.headerCol1}>
@@ -16,8 +18,11 @@ const Header = () => {
         </div>
 
         <div className={classes.headerCol3}>
-          <CgProfile size={20} />
-          <p className={classes.headerTitle}>Profile</p>
+          <div className={classes.profile}>
+            <CgProfile size={20} />
+            {/* <p className={classes.headerTitle}>Profile</p> */}
+            <p>{user?.name}</p>
+          </div>
 
           <MdOutlineDarkMode
             onClick={toggleTheme}

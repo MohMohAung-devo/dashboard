@@ -29,6 +29,13 @@
   gap: 1rem;
   align-items: center;
 }
+
+.profile {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  gap: 5px;
+}
 .headerInput {
   width: 300px;
   padding: 10px 28px;

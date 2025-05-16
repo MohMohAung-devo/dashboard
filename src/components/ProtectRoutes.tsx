@@ -1,11 +1,12 @@
-import React from "react";
 import { useAuth } from "../services/authContext";
 import Login from "./login/Login";
-import { Home } from "../page/dashbaord/Home";
+import { Outlet } from "react-router-dom";
 
 const ProtectRoutes = () => {
   const { user } = useAuth();
-  return <div>{!user ? <Login /> : <Home />}</div>;
+
+  if (!user) return <Login />;
+  return <Outlet />;
 };
 
 export default ProtectRoutes;

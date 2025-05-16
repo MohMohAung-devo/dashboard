@@ -15,12 +15,12 @@ const Login = () => {
 
   const hanldeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setEmail(email);
-    setPassword(password);
-    setData([...data, { email, password }]);
-
-    const reslut = await login({ email, password });
-    return reslut;
+    try {
+      const reslut = await login(email, password);
+      return reslut;
+    } catch (err) {
+      console.log("Login failed", err);
+    }
   };
 
   console.log(data);
@@ -32,11 +32,13 @@ const Login = () => {
           <h1>Login Form</h1>
           <input
             placeholder="Eamil....."
+            type="email"
             className={classes.input}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             placeholder="Password..."
+            type="password"
             className={classes.input}
             onChange={(e) => setPassword(e.target.value)}
           />

@@ -1,12 +1,6 @@
 import API from "./api";
 
 interface userData {
-  // name: string;
-  // email: string;
-  // phone: string;
-  // password: string;
-  // location: string;
-
   id?: string;
   _id?: string;
   name: string;
@@ -33,17 +27,6 @@ interface ApiError extends Error {
 }
 
 interface AuthResponse {
-  // success: boolean;
-  // user?: {
-  //   id: string;
-  //   name: string;
-  //   email: string;
-  //   phone: string;
-  //   location: string;
-  // };
-
-  // message?: string;
-
   success: boolean;
   accessToken?: string;
   refreshToken?: string;
@@ -61,11 +44,14 @@ export const register = async (userData: userData): Promise<AuthResponse> => {
   }
 };
 
-export const login = async (
-  credentail: LoginCredentails
-): Promise<AuthResponse> => {
-  const response = await API.post<AuthResponse>("/login", credentail);
-  return response.data;
+export const login = async (data: LoginCredentails): Promise<AuthResponse> => {
+  try {
+    const response = await API.post<AuthResponse>("/login", data);
+    return response.data;
+  } catch (error: unknown) {
+    const apiError = error as ApiError;
+    throw new Error(apiError.response?.data?.message || "Logout failed");
+  }
 };
 
 export const logout = async (): Promise<{ success: boolean }> => {
@@ -80,9 +66,7 @@ export const logout = async (): Promise<{ success: boolean }> => {
 
 export const getProfile = async (): Promise<AuthResponse> => {
   try {
-    const response = await API.get<AuthResponse>("/profile", {
-      withCredentials: true,
-    });
+    const response = await API.get<AuthResponse>("/profile");
     return response.data;
   } catch (error) {
     const apiError = error as ApiError;
