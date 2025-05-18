@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import classes from "./Login.module.css";
 import { useAuth } from "../../services/authContext";
 import { ReactElement, useState } from "react";
@@ -8,16 +8,27 @@ interface LoginProps {
   password: string;
 }
 const Login = () => {
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState<LoginProps[]>([]);
+  const navigate = useNavigate();
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   const hanldeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const reslut = await login(email, password);
-      return reslut;
+      const result = await login(email, password);
+
+      if (result?.success) {
+        void navigate("/");
+      } else {
+        console.log("Login failed: Invalid credentials");
+      }
+      // return reslut;
     } catch (err) {
       console.log("Login failed", err);
     }

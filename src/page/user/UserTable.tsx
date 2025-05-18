@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import classes from "./User.module.css";
 import { TbArrowsDownUp } from "react-icons/tb";
 import usePagination from "../hooks/usePagination";
@@ -37,7 +37,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
   const [boxShow, setBoxShow] = useState(false);
   const [show, setShow] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
+  const user = useMemo(() => {
     const userData = data?.map((item) => ({
       id: item._id,
       name: item.name,

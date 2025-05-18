@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import UserTable from "./UserTable";
 import axios from "axios";
 
@@ -13,7 +13,7 @@ interface userProps {
 
 const User = () => {
   const [data, setData] = useState<userProps[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,17 +26,13 @@ const User = () => {
             withCredentials: true,
           }
         );
-        setData(result.data);
-        console.log(result.data);
-
-        // if (Array.isArray(result.data)) {
-        //   setData(result.data);
-        // } else {
-        //   console.error("Expected array but got:", result.data);
-        //   setData([]); // Fallback to empty array
-        // }
+        setTimeout(() => {
+          setData(result.data);
+          console.log(result.data);
+          setIsLoading(false);
+        }, 300);
       } catch (err) {
-        setError(error);
+        setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setIsLoading(false);
       }
@@ -44,16 +40,19 @@ const User = () => {
     void fetchUser();
   }, []);
 
-  useEffect(() => {
-    setData(data);
-  }, [data]);
+  // useEffect(() => {
+  //   setData(data);
+  // }, [data]);
 
-  if (isLoading) return <h1>Loading.....</h1>;
-  if (!data || data.length === 0) return <h1>Not Data</h1>;
+  const memoizedData = useMemo(() => data, [data]);
+
+  // if (isLoading) return <h1>Loading.....</h1>;
+  // if (!memoizedData || memoizedData.length === 0) return <h1>Not Data</h1>;
 
   return (
     <div>
-      <UserTable data={data || []} itemsPerPage={5} />
+      <UserTable data={memoizedData} itemsPerPage={5} />
+      {error && <h1>Error: {error}</h1>}
     </div>
   );
 };

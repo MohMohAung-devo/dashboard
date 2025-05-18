@@ -31,6 +31,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<AuthResponse>;
   logout: () => Promise<void>;
   register: (userData: userData) => Promise<AuthResponse>;
+  authenicated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,6 +39,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = useState<userData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authenicated, setAuthenicated] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -45,6 +47,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
       try {
         const { user } = await authService.getProfile();
         setUser(user);
+        setAuthenicated(true);
       } catch (error) {
         setUser(null);
       } finally {
@@ -70,7 +73,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     setUser(null);
   };
 
-  const value = { user, loading, login, logout, register };
+  const value = { user, loading, login, logout, register, authenicated };
 
   return (
     <AuthContext.Provider value={value}>

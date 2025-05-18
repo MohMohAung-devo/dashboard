@@ -66,7 +66,9 @@ export const logout = async (): Promise<{ success: boolean }> => {
 
 export const getProfile = async (): Promise<AuthResponse> => {
   try {
-    const response = await API.get<AuthResponse>("/dashboard/profile");
+    const response = await API.get<AuthResponse>("/dashboard/profile", {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     const apiError = error as ApiError;
