@@ -73,3 +73,13 @@
   opacity: 0.9;
   transform: scale(1.02);
 }
+
+.logutButton {
+  background-color: #4465d1;
+  padding: 10px;
+
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}

@@ -41,6 +41,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      setLoading(true);
       try {
         const { user } = await authService.getProfile();
         setUser(user);
@@ -71,7 +72,11 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
   const value = { user, loading, login, logout, register };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {loading ? <div>Loading...</div> : children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = (): AuthContextType => {

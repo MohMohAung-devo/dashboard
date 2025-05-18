@@ -17,7 +17,7 @@ const data = [
 
 export default function Chart() {
   return (
-    <BarChart width={800} height={500} data={data}>
+    <BarChart width={1300} height={500} data={data}>
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />

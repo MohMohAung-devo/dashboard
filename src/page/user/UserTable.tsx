@@ -38,7 +38,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
   const [show, setShow] = useState(false);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    const userData = data.map((item) => ({
+    const userData = data?.map((item) => ({
       id: item._id,
       name: item.name,
       email: item.email,

@@ -1,4 +1,3 @@
-import React from "react";
 import classes from "./Header.module.css";
 import { useTheme } from "../../useContext";
 import { MdOutlineDarkMode } from "react-icons/md";
@@ -7,7 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { useAuth } from "../../services/authContext";
 
 const Header = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   return (
     <div className={classes.headerCol1}>
@@ -23,6 +22,9 @@ const Header = () => {
             {/* <p className={classes.headerTitle}>Profile</p> */}
             <p>{user?.name}</p>
           </div>
+          <button className={classes.logutButton} onClick={logout}>
+            Logout
+          </button>
 
           <MdOutlineDarkMode
             onClick={toggleTheme}
