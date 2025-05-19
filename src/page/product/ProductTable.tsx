@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import classes from "./Product.module.css";
 import usePagination from "../hooks/usePagination";
 import { RiArrowRightWideFill, RiArrowLeftWideFill } from "react-icons/ri";
+import { useProductAdd } from "../../api/useProduct";
 
 interface productProps {
   id: number;
@@ -26,6 +27,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   itemsPerPage,
 }) => {
   const [product, setProduct] = useState<productProps[]>(data);
+  const { addProducts } = useProductAdd();
   useEffect(() => {
     if (data.length > 0) {
       setProduct(data);
@@ -108,7 +110,6 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     setProduct(product.filter((item) => item.id !== id));
   };
 
-  console.log("data", data);
   // const handleEdit = (item: productProps) => {
   //   setName(item.name);
   //   setCount(item.count);
@@ -269,7 +270,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     <button
                       className={classes.cancelButton}
                       type="submit"
-                      onClick={handleCancel}
+                      // onClick={handleCancel}
                     >
                       Cancel
                     </button>

@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { ProductTable } from "./ProductTable";
 import Photo from "../../assets/photo.jpg";
-import { useProductFetch } from "../../api/useProductFetch";
+import { useProductFetch } from "../../api/useProduct";
 
 const Product = () => {
   const { products, loading } = useProductFetch();
-  interface productProps {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    count: number;
-    file: string;
-    createdAt: string;
-    createdBy: {
-      name: string;
-    };
-  }
+  // interface productProps {
+  //   id: number;
+  //   name: string;
+  //   description: string;
+  //   price: number;
+  //   count: number;
+  //   file: string;
+  //   createdAt: string;
+  //   createdBy: {
+  //     name: string;
+  //   };
+  // }
   // const productList: productProps[] = [
   //   {
   //     id: 1,

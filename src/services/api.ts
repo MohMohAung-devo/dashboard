@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -7,10 +7,6 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 const API = axios.create({
   baseURL: "http://localhost:3000/api/auth",
   withCredentials: true,
-
-  // headers: {
-  //   "Content-Type": "application/json",
-  // },
   timeout: 5000,
 });
 
@@ -18,23 +14,6 @@ API.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json";
   return config;
 });
-
-// API.interceptors.response.use(
-//   (response) => response,
-//   async (error: AxiosError) => {
-//     if (error.response?.status === 401) {
-//       try {
-//         await API.post("/refresh");
-//         return API({ ...error.config, headers: { ...error.config?.headers } });
-//       } catch (err) {
-//         console.error("Token refresh failed");
-//         return Promise.reject(err);
-//       }
-//     }
-
-//     return Promise.reject(error);
-//   }
-// );
 
 API.interceptors.response.use(
   (response) => response,
