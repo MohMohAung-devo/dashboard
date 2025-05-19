@@ -26,11 +26,11 @@ const User = () => {
             withCredentials: true,
           }
         );
-        setTimeout(() => {
-          setData(result.data);
-          console.log(result.data);
-          setIsLoading(false);
-        }, 300);
+        // setTimeout(() => {
+        setData(result.data);
+        console.log(result.data);
+        setIsLoading(false);
+        // }, 300);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
@@ -40,14 +40,7 @@ const User = () => {
     void fetchUser();
   }, []);
 
-  // useEffect(() => {
-  //   setData(data);
-  // }, [data]);
-
   const memoizedData = useMemo(() => data, [data]);
-
-  // if (isLoading) return <h1>Loading.....</h1>;
-  // if (!memoizedData || memoizedData.length === 0) return <h1>Not Data</h1>;
 
   return (
     <div>

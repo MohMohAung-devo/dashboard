@@ -6,10 +6,14 @@ import { RiArrowRightWideFill, RiArrowLeftWideFill } from "react-icons/ri";
 interface productProps {
   id: number;
   name: string;
-  price: string;
-  count: string;
+  description: string;
+  price: number;
+  count: number;
   file: string;
   createdAt: string;
+  createdBy: {
+    name: string;
+  };
 }
 
 interface ProductTableProps {
@@ -22,6 +26,11 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   itemsPerPage,
 }) => {
   const [product, setProduct] = useState<productProps[]>(data);
+  useEffect(() => {
+    if (data.length > 0) {
+      setProduct(data);
+    }
+  }, [data]);
   const { slicedData, pagination, prvPage, nextPage, changePage } =
     usePagination<productProps>({
       data: product,
@@ -29,9 +38,8 @@ export const ProductTable: React.FC<ProductTableProps> = ({
       startFrom: 1,
     });
 
-  console.log(data, "data");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   const [count, setCount] = useState("");
   const [file, setFile] = useState("");
   const [show, setShow] = useState(false);
@@ -47,112 +55,112 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    setIsLoading(true);
+  //   setIsLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  //   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    if (editItem) {
-      setProduct((prv) =>
-        prv.map((item) =>
-          item.id === editItem.id ? { ...item, name, price, count, file } : item
-        )
-      );
-      setName("");
-      setPrice("");
-      setCount("");
-      setFile("");
-      setEditItem(null);
-      setShow(false);
-    } else {
-      if (!name || !price || !count || !file) {
-        alert("Please fill in all field");
-        return;
-      }
-      setProduct([
-        ...product,
-        {
-          id: product.length + 1,
-          name,
-          price,
-          count,
-          file,
-          createdAt: new Date().toISOString(),
-        },
-      ]);
+  //   if (editItem) {
+  //     setProduct((prv) =>
+  //       prv.map((item) =>
+  //         item.id === editItem.id ? { ...item, name, price, count, file } : item
+  //       )
+  //     );
+  //     setName("");
+  //     setPrice("");
+  //     setCount("");
+  //     setFile("");
+  //     setEditItem(null);
+  //     setShow(false);
+  //   } else {
+  //     if (!name || !price || !count || !file) {
+  //       alert("Please fill in all field");
+  //       return;
+  //     }
+  //     setProduct([
+  //       ...product,
+  //       {
+  //         id: product.length + 1,
+  //         name,
+  //         price,
+  //         count,
+  //         file,
+  //         createdAt: new Date().toISOString(),
+  //       },
+  //     ]);
 
-      setName("");
-      setPrice("");
-      setCount("");
-      setFile("");
-    }
+  //     setName("");
+  //     setPrice("");
+  //     setCount("");
+  //     setFile("");
+  //   }
 
-    setName("");
-    setPrice("");
-    setCount("");
-    setFile("");
-    setShow(false);
-    setIsLoading(false);
-  };
+  //   setName("");
+  //   setPrice("");
+  //   setCount("");
+  //   setFile("");
+  //   setShow(false);
+  //   setIsLoading(false);
+  // };
   const handelDelete = (id: number) => {
     setProduct(product.filter((item) => item.id !== id));
   };
 
-  console.log(product, "slidedDAta");
-  const handleEdit = (item: productProps) => {
-    setName(item.name);
-    setCount(item.count);
-    setPrice(item.price);
-    setFile(item.file);
-    setShow(true);
-    setEditItem(item);
-  };
-  const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  console.log("data", data);
+  // const handleEdit = (item: productProps) => {
+  //   setName(item.name);
+  //   setCount(item.count);
+  //   setPrice(item.price);
+  //   setFile(item.file);
+  //   setShow(true);
+  //   setEditItem(item);
+  // };
+  // const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
 
-    if (editItem) {
-      setName(editItem.name);
-      setPrice(editItem.price);
-      setCount(editItem.count);
-      setFile(editItem.file);
-      setEditItem(null);
-      setShow(false);
-    } else {
-      setName("");
-      setPrice("");
-      setCount("");
-      setFile("");
-      setShow(false);
-    }
-  };
-  const formatteDate = (isoString: string) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString();
-  };
+  //   if (editItem) {
+  //     setName(editItem.name);
+  //     setPrice(editItem.price);
+  //     setCount(editItem.count);
+  //     setFile(editItem.file);
+  //     setEditItem(null);
+  //     setShow(false);
+  //   } else {
+  //     setName("");
+  //     setPrice("");
+  //     setCount("");
+  //     setFile("");
+  //     setShow(false);
+  //   }
+  // };
+  // const formatteDate = (isoString: string) => {
+  //   const date = new Date(isoString);
+  //   return date.toLocaleDateString();
+  // };
 
-  useEffect(() => {
-    setProduct(product);
-  }, [product]);
+  // useEffect(() => {
+  //   setProduct(product);
+  // }, [product]);
 
-  const confirmHandle = (item: productProps) => {
-    setConfirmId(item.id);
-    setBoxShow(true);
-  };
+  // const confirmHandle = (item: productProps) => {
+  //   setConfirmId(item.id);
+  //   setBoxShow(true);
+  // };
 
-  const handleConfirmCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  // const handleConfirmCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
 
-    if (confirmId) {
-      setConfirmId(null);
-      setBoxShow(false);
-      setShow(false);
-    } else {
-      setConfirmId(null);
-      setBoxShow(false);
-    }
-  };
+  //   if (confirmId) {
+  //     setConfirmId(null);
+  //     setBoxShow(false);
+  //     setShow(false);
+  //   } else {
+  //     setConfirmId(null);
+  //     setBoxShow(false);
+  //   }
+  // };
   return (
     <div
       className={`${classes.productCol1} ${
@@ -177,9 +185,10 @@ export const ProductTable: React.FC<ProductTableProps> = ({
           <table>
             <thead>
               <tr>
-                <th>Name</th>
+                <th>ProductOwner</th>
+                <th>Product Name</th>
                 <th>Price</th>
-                <th>Count</th>
+                {/* <th>Count</th> */}
                 <th>Photo</th>
                 <th>Date</th>
                 <th></th>
@@ -189,29 +198,31 @@ export const ProductTable: React.FC<ProductTableProps> = ({
             <tbody>
               {slicedData.map((item, index) => (
                 <tr key={index}>
+                  <td>{item.createdBy.name}</td>
                   <td>{item.name}</td>
                   <td>{item.price}</td>
-                  <td>{item.count}</td>
                   <td>
-                    <img src={item.file} className={classes.img} alt="img" />
+                    <img
+                      src={`https://images.unsplash.com/photo-1627615275530-e60209d08216?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
+                      className={classes.img}
+                      alt="img"
+                    />
                   </td>
-                  <td>{formatteDate(item.createdAt)}</td>
+                  <td>{item.createdAt.toString()}</td>
 
                   <td>
-                    <button onClick={() => handleEdit(item)}>Edit</button>
+                    <button>Edit</button>
                   </td>
                   <td>
-                    <button onClick={() => confirmHandle(item)}>Delete</button>
+                    <button>Delete</button>
                     {boxShow && confirmId === item.id && (
                       <div className={classes.confirmBox}>
                         <p style={{ textAlign: "center", fontSize: "18px" }}>
                           Are you sure delete this product?
                         </p>
                         <div className={classes.confirmButton}>
-                          <button onClick={handleConfirmCancel}>Cancel</button>
-                          <button onClick={() => handelDelete(item.id)}>
-                            Delete
-                          </button>
+                          <button>Cancel</button>
+                          <button>Delete</button>
                         </div>
                       </div>
                     )}
@@ -230,7 +241,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
               <div className={classes.addProductCol2}>
                 <form
                   className={classes.addProductCol3}
-                  onSubmit={handleSubmit}
+                  // onSubmit={handleSubmit}
                 >
                   <input
                     placeholder="Name....."
