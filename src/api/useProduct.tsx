@@ -5,7 +5,7 @@ interface ProductProps {
   _id: string;
   name: string;
   description: string;
-  price: number;
+  price: string;
   // count: number;
   // file: string;
   createdAt: string;
@@ -85,10 +85,10 @@ export const useProductUpdate = () => {
   const [loading, setLoading] = useState(true);
   const [updateData, setUpdateData] = useState<ProductProps | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const updateProduct = async (id: string, partialData: ProductProps) => {
+  const updateProduct = async (_id: string, partialData: ProductProps) => {
     try {
       const result = await axios.put<ProductProps[]>(
-        `http://localhost:3000/api/product/updateProduct/${id}`,
+        `http://localhost:3000/api/product/updateProduct/${_id}`,
         partialData,
         {
           withCredentials: true,

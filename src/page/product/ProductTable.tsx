@@ -2,13 +2,17 @@ import React, { FormEvent, useEffect, useState } from "react";
 import classes from "./Product.module.css";
 import usePagination from "../hooks/usePagination";
 import { RiArrowRightWideFill, RiArrowLeftWideFill } from "react-icons/ri";
-import { useProductAdd, useDeleteProduct } from "../../api/useProduct";
+import {
+  useProductAdd,
+  useDeleteProduct,
+  useProductUpdate,
+} from "../../api/useProduct";
 
 interface productProps {
   _id: string;
   name: string;
   description: string;
-  price: number;
+  price: string;
   createdAt: string;
   createdBy: {
     name: string;
@@ -27,6 +31,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const [product, setProduct] = useState<productProps[]>(data);
   const { addProduct } = useProductAdd();
   const { deleteProduct } = useDeleteProduct();
+  const { productUpdate } = useProductUpdate();
   useEffect(() => {
     if (data.length > 0) {
       setProduct(data);
@@ -84,6 +89,26 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     setShow(!show);
   };
 
+  const handleEditShow = (_id: string) => {
+    setEditItem(_id);
+    setShow(true);
+  };
+
+  const handleEdit = async () => {
+    // setEditItem(item._id);
+    // setName(item.name);
+    // setPrice(item.price);
+    // setDescription(item.description);
+
+    try {
+      const response = await productUpdate({ _id, name, description, price });
+
+      console.log("response", response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div
       className={`${classes.productCol1} ${
@@ -130,7 +155,9 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                   <td>{item.createdAt.toString()}</td>
 
                   <td>
-                    <button>Edit</button>
+                    <button onClick={() => handleEditShow(item._id)}>
+                      Edit
+                    </button>
                   </td>
                   <td>
                     <button onClick={() => handleBoxShow(item)}>Delete</button>
@@ -162,7 +189,10 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                 {editItem ? "Edit Product Form" : " Add Product Form"}
               </h1>
               <div className={classes.addProductCol2}>
-                <form className={classes.addProductCol3} onSubmit={handleAdd}>
+                <form
+                  className={classes.addProductCol3}
+                  onSubmit={handleAdd || handleEdit}
+                >
                   <input
                     placeholder="Name....."
                     value={name}

@@ -6,7 +6,7 @@ import { RiArrowLeftWideFill, RiArrowRightWideFill } from "react-icons/ri";
 import axios from "axios";
 
 interface userProps {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   phone: string;
@@ -55,7 +55,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
       const addUser = await axios.post<userProps>(
         `http://localhost:3000/users`,
         {
-          id: id,
+          _id: id,
           name: name,
           email: email,
           phone: phone,
@@ -64,7 +64,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
         }
       );
 
-      setUsers((prv) => [...prv, { id: addUser.data.id, ...addUser.data }]);
+      setUsers((prv) => [...prv, { _id: addUser.data.id, ...addUser.data }]);
       setShow(false);
     } catch (err) {
       setError(err);
@@ -75,12 +75,12 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
     setShow(!show);
   };
 
-  const handleUpdate = async (id: string) => {
+  const handleUpdate = async (_id: string) => {
     try {
       const result = await axios.put<userProps>(
-        `http://localhost:3000/updateUser/${id}`,
+        `http://localhost:3000/api/auth/updateUser/${_id}`,
         {
-          id: id,
+          _id: id,
           name: name,
           email: email,
           phone: phone,
@@ -91,7 +91,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
 
       setUsers((prv) =>
         prv.map((user) =>
-          user.id === id
+          user._id === _id
             ? { ...user, ...result.data, createdAt: user.createdAt }
             : user
         )
@@ -115,17 +115,18 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
     );
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (_id: string) => {
     try {
-      await axios.delete(`http://localhost:3000/user/${id}`);
-      setUsers((user) => user.filter((item) => item.id !== id));
+      await axios.delete(`http://localhost:3000/api/auth/deleteUser/${_id}`, {
+        withCredentials: true,
+      });
     } catch (err) {
       setError(err);
     }
   };
 
   const confirmHandle = (item: userProps) => {
-    setConfirmId(item.id);
+    setConfirmId(item);
     setBoxShow(true);
   };
 
@@ -169,52 +170,15 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
               </tr>
             </thead>
             <tbody>
-              {slicedData.map((item, id) => (
-                <tr key={id}>
-                  {editItem?.id === item.id ? (
-                    <td>
-                      <input
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                      />
-                    </td>
-                  ) : (
-                    <td>{item.name}</td>
-                  )}
+              {slicedData.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
 
-                  {editItem?.id === item.id ? (
-                    <td>
-                      {" "}
-                      <input
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                      />
-                    </td>
-                  ) : (
-                    <td>{item.email}</td>
-                  )}
+                  <td>{item.email}</td>
 
-                  {editItem?.id === item.id ? (
-                    <td>
-                      <input
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                      />
-                    </td>
-                  ) : (
-                    <td>{item.phone}</td>
-                  )}
+                  <td>{item.phone}</td>
 
-                  {editItem?.id === item.id ? (
-                    <td>
-                      <input
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                      />
-                    </td>
-                  ) : (
-                    <td>{item.location}</td>
-                  )}
+                  <td>{item.location}</td>
 
                   <td>
                     {item.createdAt
@@ -222,22 +186,11 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
                       : "No Date"}
                   </td>
                   <td>
-                    {editItem?.id === item.id ? (
-                      <button
-                        type="button"
-                        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                        onClick={() => handleUpdate(item.id)}
-                      >
-                        Update
-                      </button>
-                    ) : (
-                      <button onClick={() => handleEdit(item)}>Edit</button>
-                    )}
-                  </td>
-                  <td>
-                    <button onClick={() => confirmHandle(item)}>Delete</button>
+                    <button onClick={() => confirmHandle(item._id)}>
+                      Delete
+                    </button>
 
-                    {boxShow && confirmId === item.id && (
+                    {boxShow && confirmId === item._id && (
                       <div className={classes.confirmBox}>
                         <p style={{ textAlign: "center", fontSize: "18px" }}>
                           Are you sure delete this user?
@@ -246,8 +199,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
                           <button onClick={handleConfirmCancel}>Cancel</button>
                           <button
                             type="button"
-                            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                            onClick={() => handleDelete(item.id)}
+                            onClick={() => handleDelete(item._id)}
                           >
                             Delete
                           </button>
