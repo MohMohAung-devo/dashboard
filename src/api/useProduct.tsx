@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../services/authContext";
 
 interface ProductProps {
-  id: number;
+  _id: string;
   name: string;
   description: string;
   price: number;
@@ -115,4 +115,31 @@ export const useProductUpdate = () => {
     loading,
     error,
   };
+};
+
+export const useDeleteProduct = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const deleteProduct = async (id: string) => {
+    try {
+      const result = await axios.delete(
+        `http://localhost:3000/api/product/deleteProduct/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(result);
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred";
+      setError(errorMessage);
+      console.error("Error fetching products:", errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { deleteProduct };
 };

@@ -2,15 +2,13 @@ import React, { FormEvent, useEffect, useState } from "react";
 import classes from "./Product.module.css";
 import usePagination from "../hooks/usePagination";
 import { RiArrowRightWideFill, RiArrowLeftWideFill } from "react-icons/ri";
-import { useProductAdd, useProductUpdate } from "../../api/useProduct";
+import { useProductAdd, useDeleteProduct } from "../../api/useProduct";
 
 interface productProps {
-  id: number;
+  _id: string;
   name: string;
   description: string;
   price: number;
-  // count: number;
-  // file: string;
   createdAt: string;
   createdBy: {
     name: string;
@@ -28,6 +26,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
 }) => {
   const [product, setProduct] = useState<productProps[]>(data);
   const { addProduct } = useProductAdd();
+  const { deleteProduct } = useDeleteProduct();
   useEffect(() => {
     if (data.length > 0) {
       setProduct(data);
@@ -40,24 +39,17 @@ export const ProductTable: React.FC<ProductTableProps> = ({
       startFrom: 1,
     });
 
+  console.log(data);
+
   const [name, setName] = useState("");
 
   const [price, setPrice] = useState(0);
-  const [count, setCount] = useState("");
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState("");
   const [show, setShow] = useState(false);
   const [editItem, setEditItem] = useState<productProps | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmId, setConfirmId] = useState<number | null>(null);
   const [boxShow, setBoxShow] = useState(false);
-
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(URL.createObjectURL(selectedFile));
-    }
-  };
 
   const handleAdd = async (e: FormEvent) => {
     e.preventDefault();
@@ -72,8 +64,20 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     }
   };
 
-  const handelDelete = (id: number) => {
-    setProduct(product.filter((item) => item.id !== id));
+  const handelDelete = async (_id: string) => {
+    try {
+      const response = await deleteProduct(_id);
+      if (response?.data?.success === true) {
+        setBoxShow(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleBoxShow = (item: productProps) => {
+    setBoxShow(true);
+    setConfirmId(item._id);
   };
 
   return (
@@ -131,15 +135,17 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     <button>Edit</button>
                   </td>
                   <td>
-                    <button>Delete</button>
-                    {boxShow && confirmId === item.id && (
+                    <button onClick={() => handleBoxShow(item)}>Delete</button>
+                    {boxShow && confirmId === item._id && (
                       <div className={classes.confirmBox}>
                         <p style={{ textAlign: "center", fontSize: "18px" }}>
                           Are you sure delete this product?
                         </p>
                         <div className={classes.confirmButton}>
                           <button>Cancel</button>
-                          <button>Delete</button>
+                          <button onClick={() => handelDelete(item._id)}>
+                            Delete
+                          </button>
                         </div>
                       </div>
                     )}
@@ -156,11 +162,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                 {editItem ? "Edit Product Form" : " Add Product Form"}
               </h1>
               <div className={classes.addProductCol2}>
-                <form
-                  className={classes.addProductCol3}
-                  // onSubmit={handleSubmit}
-                  onSubmit={handleAdd}
-                >
+                <form className={classes.addProductCol3} onSubmit={handleAdd}>
                   <input
                     placeholder="Name....."
                     value={name}
@@ -181,21 +183,9 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     className={classes.input}
                     onChange={(e) => setDescription(e.target.value)}
                   />
-                  {/* <input
-                    placeholder="Count...."
-                    value={count}
-                    className={classes.input}
-                    onChange={(e) => setCount(e.target.value)}
-                  /> */}
-                  {/* <input type="file" onChange={handleFile} /> */}
 
-                  {/* {file && <img src={file} className={classes.prvFile} />} */}
                   <div className={classes.addProductButton}>
-                    <button
-                      className={classes.cancelButton}
-                      type="submit"
-                      // onClick={handleCancel}
-                    >
+                    <button className={classes.cancelButton} type="submit">
                       Cancel
                     </button>
                     <button
