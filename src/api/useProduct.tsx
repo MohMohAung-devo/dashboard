@@ -30,7 +30,7 @@ export const useProductFetch = () => {
         }
       );
       setProducts(result.data);
-      console.log(result.data);
+      // console.log(result.data);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "An unknown error occurred";

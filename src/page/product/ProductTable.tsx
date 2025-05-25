@@ -63,117 +63,19 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     e.preventDefault();
     try {
       const result = await addProduct({ name, price, description });
+      if (result?.config) {
+        setShow(false);
+      }
       console.log(result);
     } catch (err) {
       console.log(err);
     }
   };
 
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   setIsLoading(true);
-
-  //   await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  //   if (editItem) {
-  //     setProduct((prv) =>
-  //       prv.map((item) =>
-  //         item.id === editItem.id ? { ...item, name, price, count, file } : item
-  //       )
-  //     );
-  //     setName("");
-  //     setPrice("");
-  //     setCount("");
-  //     setFile("");
-  //     setEditItem(null);
-  //     setShow(false);
-  //   } else {
-  //     if (!name || !price || !count || !file) {
-  //       alert("Please fill in all field");
-  //       return;
-  //     }
-  //     setProduct([
-  //       ...product,
-  //       {
-  //         id: product.length + 1,
-  //         name,
-  //         price,
-  //         count,
-  //         file,
-  //         createdAt: new Date().toISOString(),
-  //       },
-  //     ]);
-
-  //     setName("");
-  //     setPrice("");
-  //     setCount("");
-  //     setFile("");
-  //   }
-
-  //   setName("");
-  //   setPrice("");
-  //   setCount("");
-  //   setFile("");
-  //   setShow(false);
-  //   setIsLoading(false);
-  // };
   const handelDelete = (id: number) => {
     setProduct(product.filter((item) => item.id !== id));
   };
 
-  // const handleEdit = (item: productProps) => {
-  //   setName(item.name);
-  //   setCount(item.count);
-  //   setPrice(item.price);
-  //   setFile(item.file);
-  //   setShow(true);
-  //   setEditItem(item);
-  // };
-  // const handleCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-
-  //   if (editItem) {
-  //     setName(editItem.name);
-  //     setPrice(editItem.price);
-  //     setCount(editItem.count);
-  //     setFile(editItem.file);
-  //     setEditItem(null);
-  //     setShow(false);
-  //   } else {
-  //     setName("");
-  //     setPrice("");
-  //     setCount("");
-  //     setFile("");
-  //     setShow(false);
-  //   }
-  // };
-  // const formatteDate = (isoString: string) => {
-  //   const date = new Date(isoString);
-  //   return date.toLocaleDateString();
-  // };
-
-  // useEffect(() => {
-  //   setProduct(product);
-  // }, [product]);
-
-  // const confirmHandle = (item: productProps) => {
-  //   setConfirmId(item.id);
-  //   setBoxShow(true);
-  // };
-
-  // const handleConfirmCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-
-  //   if (confirmId) {
-  //     setConfirmId(null);
-  //     setBoxShow(false);
-  //     setShow(false);
-  //   } else {
-  //     setConfirmId(null);
-  //     setBoxShow(false);
-  //   }
-  // };
   return (
     <div
       className={`${classes.productCol1} ${
