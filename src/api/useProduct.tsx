@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useAuth } from "../services/authContext";
 
 interface ProductProps {
   _id: string;

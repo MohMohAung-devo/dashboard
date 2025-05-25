@@ -43,7 +43,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
 
   const [name, setName] = useState("");
 
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
   const [editItem, setEditItem] = useState<productProps | null>(null);
@@ -67,9 +67,8 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const handelDelete = async (_id: string) => {
     try {
       const response = await deleteProduct(_id);
-      if (response?.data?.success === true) {
-        setBoxShow(false);
-      }
+      console.log("response", response);
+      setBoxShow(false);
     } catch (err) {
       console.log(err);
     }
@@ -78,6 +77,11 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const handleBoxShow = (item: productProps) => {
     setBoxShow(true);
     setConfirmId(item._id);
+  };
+
+  const handleAddShow = () => {
+    setEditItem(null);
+    setShow(!show);
   };
 
   return (
@@ -89,13 +93,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
       <div className={classes.productCol2}>
         <div className={classes.productCol3}>
           <h1 className={classes.title}>Product</h1>
-          <button
-            className={classes.button}
-            onClick={() => {
-              setEditItem(null);
-              setShow(true);
-            }}
-          >
+          <button className={classes.button} onClick={handleAddShow}>
             Add Product
           </button>
         </div>
@@ -142,7 +140,9 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                           Are you sure delete this product?
                         </p>
                         <div className={classes.confirmButton}>
-                          <button>Cancel</button>
+                          <button onClick={() => setBoxShow(false)}>
+                            Cancel
+                          </button>
                           <button onClick={() => handelDelete(item._id)}>
                             Delete
                           </button>
