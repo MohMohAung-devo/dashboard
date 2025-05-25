@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import classes from "./Product.module.css";
 import usePagination from "../hooks/usePagination";
 import { RiArrowRightWideFill, RiArrowLeftWideFill } from "react-icons/ri";
-import { useProductAdd } from "../../api/useProduct";
+import { useProductAdd, useProductUpdate } from "../../api/useProduct";
 
 interface productProps {
   id: number;
   name: string;
   description: string;
   price: number;
-  count: number;
-  file: string;
+  // count: number;
+  // file: string;
   createdAt: string;
   createdBy: {
     name: string;
@@ -27,7 +27,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   itemsPerPage,
 }) => {
   const [product, setProduct] = useState<productProps[]>(data);
-  const { addProducts } = useProductAdd();
+  const { addProduct } = useProductAdd();
   useEffect(() => {
     if (data.length > 0) {
       setProduct(data);
@@ -41,8 +41,10 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     });
 
   const [name, setName] = useState("");
+
   const [price, setPrice] = useState(0);
   const [count, setCount] = useState("");
+  const [description, setDescription] = useState("");
   const [file, setFile] = useState("");
   const [show, setShow] = useState(false);
   const [editItem, setEditItem] = useState<productProps | null>(null);
@@ -54,6 +56,16 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  const handleAdd = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const result = await addProduct({ name, price, description });
+      console.log(result);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -189,6 +201,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                 <th>ProductOwner</th>
                 <th>Product Name</th>
                 <th>Price</th>
+                <th>Description</th>
                 {/* <th>Count</th> */}
                 <th>Photo</th>
                 <th>Date</th>
@@ -202,6 +215,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                   <td>{item.createdBy.name}</td>
                   <td>{item.name}</td>
                   <td>{item.price}</td>
+                  <td>{item.description}</td>
                   <td>
                     <img
                       src={`https://images.unsplash.com/photo-1627615275530-e60209d08216?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
@@ -243,6 +257,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                 <form
                   className={classes.addProductCol3}
                   // onSubmit={handleSubmit}
+                  onSubmit={handleAdd}
                 >
                   <input
                     placeholder="Name....."
@@ -257,15 +272,22 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     className={classes.input}
                     onChange={(e) => setPrice(e.target.value)}
                   />
+
                   <input
+                    placeholder="Description...."
+                    value={description}
+                    className={classes.input}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  {/* <input
                     placeholder="Count...."
                     value={count}
                     className={classes.input}
                     onChange={(e) => setCount(e.target.value)}
-                  />
-                  <input type="file" onChange={handleFile} />
+                  /> */}
+                  {/* <input type="file" onChange={handleFile} /> */}
 
-                  {file && <img src={file} className={classes.prvFile} />}
+                  {/* {file && <img src={file} className={classes.prvFile} />} */}
                   <div className={classes.addProductButton}>
                     <button
                       className={classes.cancelButton}
