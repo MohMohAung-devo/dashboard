@@ -4,6 +4,7 @@ import { TbArrowsDownUp } from "react-icons/tb";
 import usePagination from "../hooks/usePagination";
 import { RiArrowLeftWideFill, RiArrowRightWideFill } from "react-icons/ri";
 import axios from "axios";
+import { useUserDelete } from "../../api/useUser";
 
 interface userProps {
   _id: string;
@@ -27,6 +28,8 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
       startFrom: 1,
     });
 
+  const { deleteUser } = useUserDelete();
+
   const [editItem, setEditItem] = useState<userProps | null>(null);
   const [id, setId] = useState("");
   const [name, setName] = useState("");
@@ -39,7 +42,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
   const [error, setError] = useState<string | null>(null);
   const user = useMemo(() => {
     const userData = data?.map((item) => ({
-      id: item._id,
+      id: item.id,
       name: item.name,
       email: item.email,
       phone: item.phone,
@@ -49,27 +52,14 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
     setUsers(userData);
   }, [data]);
 
-  const handleUserAdd = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const addUser = await axios.post<userProps>(
-        `http://localhost:3000/users`,
-        {
-          _id: id,
-          name: name,
-          email: email,
-          phone: phone,
-          location: location,
-          date: new Date().toISOString(),
-        }
-      );
+  useEffect(() => {
+    const userData = data?.map((item) => ({
+      ...item,
+    }));
+    setUsers(userData || []);
+  }, [data]);
 
-      setUsers((prv) => [...prv, { _id: addUser.data.id, ...addUser.data }]);
-      setShow(false);
-    } catch (err) {
-      setError(err);
-    }
-  };
+  const handleUserAdd = async (e: React.FormEvent) => {};
 
   const handleShow = () => {
     setShow(!show);
@@ -101,14 +91,6 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
     }
   };
 
-  const handleEdit = (item: userProps) => {
-    setName(item.name);
-    setEmail(item.email);
-    setPhone(item.phone);
-    setLocation(item.location);
-    setEditItem(item);
-  };
-
   const handleSort = () => {
     setUsers((prevUsers) =>
       [...prevUsers].sort((a, b) => a.name.localeCompare(b.name))
@@ -117,16 +99,17 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
 
   const handleDelete = async (_id: string) => {
     try {
-      await axios.delete(`http://localhost:3000/api/auth/deleteUser/${_id}`, {
-        withCredentials: true,
-      });
+      await deleteUser(_id);
+      setUsers((prev) => prev.filter((user) => user._id !== _id));
+      setBoxShow(false);
+      setConfirmId(null);
     } catch (err) {
-      setError(err);
+      console.error("Delete error:", err);
     }
   };
 
-  const confirmHandle = (item: userProps) => {
-    setConfirmId(item);
+  const confirmHandle = (_id: string) => {
+    setConfirmId(_id);
     setBoxShow(true);
   };
 
@@ -199,7 +182,7 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
                           <button onClick={handleConfirmCancel}>Cancel</button>
                           <button
                             type="button"
-                            onClick={() => handleDelete(item._id)}
+                            onClick={() => void handleDelete(item._id)}
                           >
                             Delete
                           </button>
