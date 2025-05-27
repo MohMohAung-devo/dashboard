@@ -105,11 +105,12 @@ export const useProductUpdate = () => {
     }
   };
 
-  useEffect(() => {
-    void updateProduct();
-  }, []);
+  // useEffect(() => {
+  //   void updateProduct();
+  // }, []);
 
   return {
+    updateProduct,
     updateData,
     loading,
     error,

@@ -31,7 +31,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const [product, setProduct] = useState<productProps[]>(data);
   const { addProduct } = useProductAdd();
   const { deleteProduct } = useDeleteProduct();
-  const { productUpdate } = useProductUpdate();
+  const { updateProduct, updateData } = useProductUpdate();
   useEffect(() => {
     if (data.length > 0) {
       setProduct(data);
@@ -59,7 +59,8 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const handleAdd = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const result = await addProduct({ name, price, description });
+      const result = await addProduct({ _id, name, price, description });
+
       if (result?.config) {
         setShow(false);
       }
@@ -73,6 +74,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     try {
       const response = await deleteProduct(_id);
       console.log("response", response);
+      setProduct((prev) => prev.filter((user) => user._id !== _id));
       setBoxShow(false);
     } catch (err) {
       console.log(err);
@@ -89,21 +91,35 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     setShow(!show);
   };
 
-  const handleEditShow = (_id: string) => {
-    setEditItem(_id);
+  const handleEditShow = (product: productProps) => {
+    setEditItem(product);
+    setName(product.name);
+    setPrice(product.price);
+    setDescription(product.description);
     setShow(true);
   };
 
-  const handleEdit = async () => {
-    // setEditItem(item._id);
-    // setName(item.name);
-    // setPrice(item.price);
-    // setDescription(item.description);
-
+  const handleEdit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!editItem) return null;
     try {
-      const response = await productUpdate({ _id, name, description, price });
+      const updatedProducts = await updateProduct(editItem?._id, {
+        name,
+        price,
+        description,
+      });
 
-      console.log("response", response);
+      setProduct((prv) =>
+        prv.map((p) =>
+          p._id === editItem._id ? { ...p, ...updatedProducts } : p
+        )
+      );
+
+      setShow(false);
+      setEditItem(null);
+      setName("");
+      setPrice("");
+      setDescription("");
     } catch (err) {
       console.log(err);
     }
@@ -155,9 +171,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                   <td>{item.createdAt.toString()}</td>
 
                   <td>
-                    <button onClick={() => handleEditShow(item._id)}>
-                      Edit
-                    </button>
+                    <button onClick={() => handleEditShow(item)}>Edit</button>
                   </td>
                   <td>
                     <button onClick={() => handleBoxShow(item)}>Delete</button>
@@ -191,7 +205,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
               <div className={classes.addProductCol2}>
                 <form
                   className={classes.addProductCol3}
-                  onSubmit={handleAdd || handleEdit}
+                  onSubmit={editItem ? handleEdit : handleAdd}
                 >
                   <input
                     placeholder="Name....."

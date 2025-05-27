@@ -59,8 +59,6 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
     setUsers(userData || []);
   }, [data]);
 
-  const handleUserAdd = async (e: React.FormEvent) => {};
-
   const handleShow = () => {
     setShow(!show);
   };
@@ -131,9 +129,6 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
       <div className={classes.userCol2}>
         <div className={classes.header}>
           <h1 className={classes.userTitle}>Users List</h1>
-          <button onClick={handleShow} className={classes.button}>
-            Add Users
-          </button>
         </div>
 
         <div className={classes.userCol3}>
@@ -195,52 +190,6 @@ export const UserTable: React.FC<UserTableProps> = ({ data, itemsPerPage }) => {
             </tbody>
           </table>
         </div>
-        {show ? (
-          <div className={classes.addUser}>
-            <div className={classes.addUserContainer}>
-              <h1 className={classes.title}>Add Products</h1>
-              <div className={classes.userAddWrapper}>
-                <form className={classes.userWrap} onSubmit={handleUserAdd}>
-                  <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className={classes.input}
-                    placeholder="Name...."
-                  />
-                  <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={classes.input}
-                    placeholder="Email...."
-                  />
-                  <input
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className={classes.input}
-                    placeholder="Phone....."
-                  />
-                  <input
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className={classes.input}
-                    placeholder="Location...."
-                  />
-
-                  <div className={classes.userAddButton}>
-                    <button className={classes.cancelButton} type="submit">
-                      Cancel
-                    </button>
-                    <button className={classes.submitButton} type="submit">
-                      Submit
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
 
         <div className={classes.pagination}>
           <div className={classes.paginationWraper}>
