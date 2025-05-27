@@ -32,6 +32,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const { addProduct } = useProductAdd();
   const { deleteProduct } = useDeleteProduct();
   const { updateProduct, updateData } = useProductUpdate();
+
   useEffect(() => {
     if (data.length > 0) {
       setProduct(data);
@@ -104,9 +105,12 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     if (!editItem) return null;
     try {
       const updatedProducts = await updateProduct(editItem?._id, {
+        _id,
         name,
         price,
         description,
+        createdAt,
+        createdBy,
       });
 
       setProduct((prv) =>

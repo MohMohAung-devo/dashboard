@@ -8,6 +8,7 @@ interface userData {
   phone: string;
   location: string;
   password?: string;
+  role: "productOwner";
   refreshToken?: string;
   createdAt?: Date;
 }
@@ -36,7 +37,10 @@ interface AuthResponse {
 
 export const register = async (userData: userData): Promise<AuthResponse> => {
   try {
-    const response = await API.post<AuthResponse>("/register", userData);
+    const response = await API.post<AuthResponse>(
+      "/dashboard/register",
+      userData
+    );
     return response.data;
   } catch (error: unknown) {
     const apiError = error as ApiError;
