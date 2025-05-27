@@ -7,6 +7,7 @@ import {
   useDeleteProduct,
   useProductUpdate,
 } from "../../api/useProduct";
+import { useAuth } from "../../services/authContext";
 
 interface productProps {
   _id: string;
@@ -28,6 +29,8 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   data,
   itemsPerPage,
 }) => {
+  const { user } = useAuth();
+
   const [product, setProduct] = useState<productProps[]>(data);
   const { addProduct } = useProductAdd();
   const { deleteProduct } = useDeleteProduct();
@@ -147,7 +150,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({
           <table>
             <thead>
               <tr>
-                <th>ProductOwner</th>
+                {user?.role === "admin" ? <th>ProductOwner</th> : ""}
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Description</th>

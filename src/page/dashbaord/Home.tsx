@@ -1,9 +1,16 @@
 import classes from "./Home.module.css";
 import Chart from "./Chart";
+import { useUserFetch } from "../../api/useUser";
 
+interface userProps {
+  name: string;
+  count: number;
+}
 export const Home = () => {
-  const totalList = [
-    { name: "Total User", count: "12" },
+  const { users } = useUserFetch();
+  console.log(users);
+  const totalList: userProps[] = [
+    { name: "Total User", count: users?.count },
     { name: "Total Order", count: "12" },
     { name: "Product Sold", count: "12" },
     { name: "New Customer", count: "12" },
