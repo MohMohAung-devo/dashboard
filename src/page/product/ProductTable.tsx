@@ -59,11 +59,12 @@ export const ProductTable: React.FC<ProductTableProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [confirmId, setConfirmId] = useState<number | null>(null);
   const [boxShow, setBoxShow] = useState(false);
+  const [pending, setPending] = useState(false);
 
   const handleAdd = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const result = await addProduct({ _id, name, price, description });
+      const result = await addProduct({ name, price, description });
 
       if (result?.config) {
         setShow(false);
@@ -108,12 +109,11 @@ export const ProductTable: React.FC<ProductTableProps> = ({
     if (!editItem) return null;
     try {
       const updatedProducts = await updateProduct(editItem?._id, {
-        _id,
         name,
         price,
         description,
-        createdAt,
-        createdBy,
+        // createdAt,
+        // createdBy,
       });
 
       setProduct((prv) =>
@@ -156,7 +156,9 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                 <th>Description</th>
                 {/* <th>Count</th> */}
                 <th>Photo</th>
+
                 <th>Date</th>
+                <th>Status</th>
                 <th></th>
                 <th></th>
               </tr>
@@ -176,6 +178,31 @@ export const ProductTable: React.FC<ProductTableProps> = ({
                     />
                   </td>
                   <td>{item.createdAt.toString()}</td>
+                  <td>
+                    {pending ? (
+                      <button
+                        style={{
+                          color: "blue",
+                          border: "none",
+                          padding: "5px",
+                          borderRadius: "3px",
+                        }}
+                      >
+                        Pending
+                      </button>
+                    ) : (
+                      <button
+                        style={{
+                          color: "green",
+                          borderRadius: "3px",
+                          padding: "5px",
+                          border: "none",
+                        }}
+                      >
+                        Approved
+                      </button>
+                    )}
+                  </td>
 
                   <td>
                     <button onClick={() => handleEditShow(item)}>Edit</button>

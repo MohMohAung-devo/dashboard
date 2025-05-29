@@ -12,6 +12,7 @@ const Navbar = () => {
     { name: "Dashbord", link: "/", icon: <RxDashboard /> },
     { name: "User", link: "/user", icon: <CiUser /> },
     { name: "Product", link: "/product", icon: <LiaProductHunt /> },
+    { name: "Sell Product", link: "/sell-product", icon: <LiaProductHunt /> },
     { name: "Chat", link: "/chat", icon: <CiChat1 /> },
   ];
 

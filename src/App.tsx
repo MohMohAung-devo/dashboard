@@ -9,6 +9,7 @@ import Chat from "./page/chat/Chat";
 import ProtectRoutes from "./components/ProtectRoutes";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
+import SellProduct from "./page/sell-product/SellProduct";
 function App() {
   return (
     <AuthProvider>
@@ -21,6 +22,7 @@ function App() {
               <Route path="" element={<Layout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/product" element={<Product />} />
+                <Route path="/sell-product" element={<SellProduct />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/chat" element={<Chat />} />
               </Route>
