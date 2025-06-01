@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import classes from "./Chat.module.css";
 import { useTheme } from "../../useContext";
 
@@ -78,76 +78,85 @@ const Chat = () => {
     <div className={classes.chatCol}>
       <div className={classes.chatCol1}>
         <h1 className={classes.title}>Chat List</h1>
-        <div className={classes.chatCol2}>
-          {people.map((item, index) => (
-            <div key={index} className={classes.chatCol3}>
-              <p
-                onClick={() => {
-                  setActiveUser(item.id);
-                  setShow(true);
-                }}
-              >
-                {item.name}
-              </p>{" "}
-            </div>
-          ))}
+        <div className={classes.Search}>
+          <input placeholder="Search...." className={classes.SearchInput} />
         </div>
-        {show && (
-          <div className={classes.chatCol4}>
-            {activeUser !== null && (
-              <div
-                className={classes.chatCol5}
-                style={{ background: theme.primaryColor }}
-              >
-                <div className={classes.chatCol6}>
-                  <h1
-                    className={classes.chatTitle}
-                    style={{ color: theme.textColor }}
-                  >
-                    {people.find((p) => p.id === activeUser)?.name}
-                  </h1>
-                  <button onClick={handleClose} className={classes.closeButton}>
-                    Close
-                  </button>
-                </div>
-
-                <div className={classes.messageContainer}>
-                  {people
-                    .find((p) => p.id === activeUser)
-                    ?.messages.map((msg) => (
-                      <div className={classes.message}>
-                        <strong style={{ color: theme.textColor }}>
-                          {msg.sender}
-                        </strong>
-                        <p
-                          className={classes.textMessage}
-                          style={{ color: theme.textColor }}
-                        >
-                          {" "}
-                          {msg.message}
-                        </p>
-                      </div>
-                    ))}
-                </div>
-                <div className={classes.sendList}>
-                  {" "}
-                  <input
-                    type="text"
-                    placeholder="Type a message..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                  />
-                  <button
-                    onClick={handleSendMessage}
-                    className={classes.sendButton}
-                  >
-                    Send
-                  </button>
-                </div>
+        <div className={classes.list}>
+          <div className={classes.chatCol2}>
+            {people.map((item, index) => (
+              <div key={index} className={classes.chatCol3}>
+                <p
+                  onClick={() => {
+                    setActiveUser(item.id);
+                    setShow(true);
+                  }}
+                >
+                  {item.name}
+                </p>{" "}
+                <p className={classes.noti}>1</p>
               </div>
-            )}
+            ))}
           </div>
-        )}
+          {show && (
+            <div className={classes.chatCol4}>
+              {activeUser !== null && (
+                <div
+                  className={classes.chatCol5}
+                  style={{ background: theme.primaryColor }}
+                >
+                  <div className={classes.chatCol6}>
+                    <h1
+                      className={classes.chatTitle}
+                      style={{ color: theme.textColor }}
+                    >
+                      {people.find((p) => p.id === activeUser)?.name}
+                    </h1>
+                    <button
+                      onClick={handleClose}
+                      className={classes.closeButton}
+                    >
+                      Close
+                    </button>
+                  </div>
+
+                  <div className={classes.messageContainer}>
+                    {people
+                      .find((p) => p.id === activeUser)
+                      ?.messages.map((msg) => (
+                        <div className={classes.message}>
+                          <strong style={{ color: theme.textColor }}>
+                            {msg.sender}
+                          </strong>
+                          <p
+                            className={classes.textMessage}
+                            style={{ color: theme.textColor }}
+                          >
+                            {" "}
+                            {msg.message}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
+                  <div className={classes.sendList}>
+                    {" "}
+                    <input
+                      type="text"
+                      placeholder="Type a message..."
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                    <button
+                      onClick={handleSendMessage}
+                      className={classes.sendButton}
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
