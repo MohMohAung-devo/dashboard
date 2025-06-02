@@ -16,7 +16,7 @@
 .formWrap {
   display: flex;
   flex-direction: column;
-  border: 1px solid #405fcb;
+
   width: 400px;
   height: 400px;
   text-align: center;
@@ -28,25 +28,24 @@
 
 .input {
   padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background-color: #405fcb;
-  color: white;
+  background-color: white;
+  color: black;
+  border-radius: 3px;
 }
 
 .input::placeholder {
-  color: white;
+  color: black;
 }
 
-.input:focus {
+/* .input:focus {
   outline: none;
-}
+} */
 
 .button {
   background-color: #405fcb;
-  padding: 10px;
+  padding: 13px;
   color: white;
-  border-radius: 10px;
+  border-radius: 3px;
   cursor: pointer;
   border: none;
 }

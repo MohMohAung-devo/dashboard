@@ -28,9 +28,15 @@ API.interceptors.response.use(
 
       try {
         // Call refresh endpoint, it will set new cookies
-        await API.post("/refresh");
-        // Retry original request with new cookies (no need to set Authorization header)
-        return API(originalRequest);
+        // await API.post("/refresh");
+        // // Retry original request with new cookies (no need to set Authorization header)
+        // return API(originalRequest);
+        const refreshToken = await API.post("/refresh");
+        if (refreshToken.data.success) {
+          return API(originalRequest);
+        } else {
+          console.error("Token refresh failed, redirectiong to login....");
+        }
       } catch (refreshError) {
         console.error("Token refresh failed. Redirect to login or logout.");
         // TODO: logout user / redirect to login page here

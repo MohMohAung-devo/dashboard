@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import classes from "./Register.module.css";
 import { useAuth } from "../../services/authContext";
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface LoginProps {
